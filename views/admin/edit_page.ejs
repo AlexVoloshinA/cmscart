@@ -1,13 +1,13 @@
 <%- include('../_layouts/adminheader') %>
 
-<h2 class="page-title">Add a page</h2>
+<h2 class="page-title">Edit a page</h2>
 <a href="/admin/pages" class="btn btn-primary">Back to all pages</a>
 <br><br>
 
-<form action="/admin/pages/add-page" method="POST">
+<form action="/admin/pages/edit-page/<%=slug%>" method="POST">
   <div class="form-group">
     <label for="">Title</label>
-    <input type="text" class="form-control" name="title"  placeholder="Title"  value="<%=title%>">
+    <input  type="text" class="form-control" name="title"  placeholder="Title"  value="<%=title%>">
   </div>
 
   <div class="form-group">
@@ -24,4 +24,3 @@
 </form>
 
 <%- include('../_layouts/adminfooter') %>
-

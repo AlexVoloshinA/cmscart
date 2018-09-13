@@ -1,7 +1,7 @@
 <%- include('../_layouts/adminheader') %>
 
-<h2 class="page-title">Pages</h2>
-<a href="/admin/pages/add-page" class="btn btn-primary">Add a new page</a>
+<h2 class="page-title">Categories</h2>
+<a href="/admin/categories/add-category" class="btn btn-primary">Add a new category</a>
 <br><br>
 
 <table class="table table-striped">
@@ -13,16 +13,13 @@
     </tr>
   </thead>
   <tbody>
-    <% pages.forEach(function(page) {%>
+    <% categories.forEach(function(category) {%>
       
-      <tr id="_id<%= page._id %>" class="<%= page.slug %>">
-        <td><%= page.title %></td>
-        <td><a href="/admin/pages/edit-page/<%= page.slug %>">Edit</a></td>
-        <% if(page.slug == "home") { %>
-          <td></td>
-          <% } else { %> 
-        <td><a class="deleteConfirmed" href="/admin/pages/delete-page/<%= page._id %>">Delete</a></td>
-        <% } %>
+      <tr id="_id<%= category._id %>" class="<%= category.slug %>">
+        <td><%= category.title %></td>
+        <td><a href="/admin/categories/edit-category/<%= category.slug %>">Edit</a></td>
+        <td><a class="deleteConfirmed" href="/admin/categories/delete-category/<%= category.slug %>">Delete</a></td>
+      
         
       </tr>
       

@@ -1,0 +1,57 @@
+<%- include('../_layouts/adminheader') %>
+
+<h2 class="page-title">Products</h2>
+<a href="/admin/products/add-product" class="btn btn-primary">Add a new product</a>
+<br><br>
+
+<% if (count > 0) { %>
+
+<table class="table table-striped">
+  <thead>
+    <tr class="home">
+      <th>Product</th>
+      <th>Price</th>
+      <th>Category</th>
+      <th>Product Image</th>
+      <th>Edit</th>
+      <th>Delte</th>
+    </tr> 
+  </thead>
+  <tbody>
+    <% products.forEach(function(p) {%>
+      
+      <tr >
+        <td><%= p.title %></td>
+        <td><%= parseFloat(p.price).toFixed(2) %></td>
+        <td><%= p.category %></td>
+        <td>
+          <% if(p.image == "") { %>
+          <img src="/images/noimage.png" alt="">
+          <% } else { %>
+            <img src="/product_images/<%=p._id%>/<%=p.image%>" alt="">
+          <% } %>
+        </td>
+        <td><a href="/admin/products/edit-product/<%= p._id %>">Edit</a></td>
+
+        <td><a class="deleteConfirmed" href="/admin/products/delete-product/<%= p._id %>">Delete</a></td>
+
+        
+      </tr>
+      
+    <% }); %>
+  </tbody>
+</table>
+
+<% } else { %>
+
+  <h3 class="text-center">There are no products</h3>
+
+<%  } %>
+<script
+  src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"
+  ></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+
+
+<%- include('../_layouts/adminfooter') %>
+

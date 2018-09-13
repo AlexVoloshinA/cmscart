@@ -5,6 +5,7 @@ const {database} = require('./config/database');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const expressValidator = require('express-validator');
+const fileupload = require('express-fileupload');
 
 
 //Connect to DB
@@ -26,6 +27,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 //Set Global Errors Variable
 app.locals.errors = null;
 
+//Express fileupload
+
+app.use(fileupload());
+
 //Body parser middleware
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -35,7 +40,7 @@ app.use(session({
   secret: 'keyboard cat',
   resave: false,
   saveUninitialized: true,
-  cookie: {secure: true}
+  //cookie: {secure: true}
 }));
 
 //Express Validator middleware
@@ -67,9 +72,13 @@ app.use(function(req,res,next){
 //Set routes
 const pages = require('./routes/pages');
 const adminpages = require('./routes/adminpages');
+const categorypages = require('./routes/admincategories');
+const adminProducts = require('./routes/adminproducts');
 
 app.use('/', pages);
 app.use('/admin/pages', adminpages);
+app.use('/admin/categories', categorypages);
+app.use('/admin/products', adminProducts);
 
 var port = 3000;
 

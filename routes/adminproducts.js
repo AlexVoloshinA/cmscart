@@ -1,15 +1,23 @@
 const express = require('express');
 const router = express.Router();
-const Page = require('../models/Page');
-
+const Product = require('../models/Product');
+const Category = require('../models/Category');
+const fs = require('fs-extra');
+const mkdirp = require('mkdirp');
+const resizeImg = require('resize-img');
 /*
-Get pages index
+Get products index
 */
 
 router.get('/', async (req,res) => {
-  let pages = await Page.find({}).sort({sorting: 1}).exec();
-  res.render('admin/pages', {
-    pages: pages
+  let count;
+
+  count = await Product.countDocuments();
+
+  let products = await Product.find({});
+  res.render('admin/products', {
+    products: products,
+    count: count
   });
 });
 
@@ -17,15 +25,18 @@ router.get('/', async (req,res) => {
 Get add page index
 */
 
-router.get('/add-page', (req,res) => {
+router.get('/add-product',async (req,res) => {
   let title = '';
-  let slug = '';
-  let content = '';
+  let desc = '';
+  let price = '';
 
-  res.render('admin/add_page', {
+  let categories =  await Category.find();
+
+  res.render('admin/add_product', {
     title: title,
-    slug: slug,
-    content: content
+    desc: desc,
+    categories: categories,
+    price: price
   });
 });
 
