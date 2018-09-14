@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
-const {database} = require('./config/database');
+const { database } = require('./config/database');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const expressValidator = require('express-validator');
@@ -9,7 +9,7 @@ const fileupload = require('express-fileupload');
 
 
 //Connect to DB
-mongoose.connect(database, {useNewUrlParser: true}).then(() => {
+mongoose.connect(database, { useNewUrlParser: true }).then(() => {
   console.log('Connected');
 });
 
@@ -32,7 +32,7 @@ app.locals.errors = null;
 app.use(fileupload());
 
 //Body parser middleware
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 //Express session middleware
@@ -45,26 +45,43 @@ app.use(session({
 
 //Express Validator middleware
 app.use(expressValidator({
-  errorFormatter: function(param, msg, value){
+  errorFormatter: function (param, msg, value) {
     var namespace = param.split('.')
-    , root = namespace.shift()
-    , formParam = root;
+      , root = namespace.shift()
+      , formParam = root;
 
-    while(namespace.length){
+    while (namespace.length) {
       formParam += '[' + namespace.shift() + ']';
     }
     return {
       param: formParam,
       msg: msg,
-      value: value 
+      value: value
     };
+  },
+  customValidators: {
+    isImage: function (value, filename) {
+      var extension = (path.extname(filename)).toLowerCase();
+      switch (extension) {
+        case '.jpg':
+          return '.jpg';
+        case '.jpeg':
+          return '.jpeg';
+        case '.png':
+          return '.png';
+        case '':
+          return '.jpg';
+        default:
+          return false;
+      }
+    }
   }
 }));
 
 //Express Messages middleware
 app.use(require('connect-flash')());
-app.use(function(req,res,next){
-  res.locals.messages = require('express-messages')(req,res);
+app.use(function (req, res, next) {
+  res.locals.messages = require('express-messages')(req, res);
   next();
 });
 
@@ -83,5 +100,5 @@ app.use('/admin/products', adminProducts);
 var port = 3000;
 
 app.listen(port, () => {
-  console.log(`Server is running on the port ${port} .....` );
+  console.log(`Server is running on the port ${port} .....`);
 });
