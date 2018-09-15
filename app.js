@@ -16,7 +16,9 @@ mongoose.connect(database, { useNewUrlParser: true }).then(() => {
 //Init app
 const app = express();
 
-
+app.locals.pages = null;
+app.locals.categories = null;
+app.locals.products = null;
 //View engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -26,6 +28,30 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //Set Global Errors Variable
 app.locals.errors = null;
+
+//Get page model
+var Page = require('./models/Page');
+
+//Get All Pages to pas th header.ejs
+Page.find({}).sort({sorting: 1}).exec((err,pages) => {
+  if(err){
+    console.log(err);
+  } else {
+    app.locals.pages = pages;
+  }
+});
+
+//Get page model
+var Category = require('./models/Category');
+
+//Get All Pages to pas th header.ejs
+Category.find({}).exec((err,categories) => {
+  if(err){
+    console.log(err);
+  } else {
+    app.locals.categories = categories;
+  }
+});
 
 //Express fileupload
 
@@ -88,14 +114,17 @@ app.use(function (req, res, next) {
 
 //Set routes
 const pages = require('./routes/pages');
+const products = require('./routes/products');
 const adminpages = require('./routes/adminpages');
 const categorypages = require('./routes/admincategories');
 const adminProducts = require('./routes/adminproducts');
 
-app.use('/', pages);
+
 app.use('/admin/pages', adminpages);
 app.use('/admin/categories', categorypages);
 app.use('/admin/products', adminProducts);
+app.use('/products', products);
+app.use('/', pages);
 
 var port = 3000;
 

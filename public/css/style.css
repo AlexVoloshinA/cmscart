@@ -16,3 +16,11 @@ ul.gallery li {
     
 }
 
+img.pimage {
+    width: 150px;
+}
+
+a.pa {
+    display: inline-block;
+    height: 160px;
+}
